@@ -39,13 +39,9 @@ cp config_template.py config.py
 
 ### 3.° Passo: Definindo o navegador
 
-Este projeto utiliza Selenium, que precisa do driver do seu navegador para funcionar. Baixe o driver do seu navegador e
-coloque-o na pasta `./linkedin` (onde já existe um driver do Chrome versão 126.0.6478.63 para Linux). Se optar por usar
+Este projeto utiliza Selenium, que precisa do driver do seu navegador para funcionar. Se optar por usar
 outro navegador que não seja o Chrome, acesse o arquivo `linkedin/linkedin/settings.py` e mude o valor da variável
 SELENIUM_DRIVER_NAME para o nome do driver do seu navegador.
-
-* [Drivers do Google Chrome.](https://googlechromelabs.github.io/chrome-for-testing/)
-* [Drivers do Firefox.](https://github.com/mozilla/geckodriver)
 
 🎉 Após isso, o script estará pronto para ser executado!
 
