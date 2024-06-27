@@ -1,9 +1,10 @@
 import json
 import re
+import unicodedata
 from collections import Counter
 
 # Carregar o arquivo JSON
-with open("./linkedin/jobs.json", "r") as file:
+with open("./linkedin/jobs_example.json", "r") as file:
     jobs = json.load(file)
 
 # Definir as palavras-chave de tecnologia que queremos contar
@@ -63,10 +64,21 @@ technologies = [
     "Xray", "TestRail", "TestLink", "Bugzilla", "Redmine", "Mantis", "Qase",
 
     # Others
-    "Scrum", "Kanban", "Bootstrap", "MVC", "MVVM", "MVP",
+    "Scrum", "Kanban", "Bootstrap", "MVC", "MVVM", "MVP", "DevOps",
 
     # Languages
-    "Inglês", "Espanhol", "Francês", "Italiano"
+    "Inglês", "Espanhol", "Francês", "Italiano",
+
+    # College
+    "Graduação", "Pós-graduação", "MBA", "Mestrado", "Doutorado",
+
+    # Certifications
+    "CPRE-FL", "CPRE-AL", "CPRE-AL", "CPRE-AL", "CPRE-FL", "CPRE-AL", "CTFL", "CTAL-TM", "CTAL-TA", "CTAL-TTA",
+    "CTAL-TAE", "CTFL-AT", "CTAL-ATT", "CT-ATLaS", "CT-AcT", "CT-AI", "CT-GaMe", "CT-GT", "CT-MAT", "CT-MBT", "CT-PT",
+    "CT-SEC", "CT-TAE", "CT-TAS", "CT-UT",
+
+    # Seniority
+    "Júnior", "Pleno", "Sênior"
 ]
 
 # Inicializar um contador para as tecnologias
@@ -74,10 +86,19 @@ tech_counter = Counter()
 
 
 # Função para encontrar correspondências exatas de palavras
+def remove_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return ''.join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+
 def find_exact_match(text, keyword):
-    # Criar um padrão de expressão regular para encontrar palavras exatas, considerando caracteres especiais
-    pattern = r'(?<!\w)' + re.escape(keyword.lower()) + r'(?!\w)'
-    return re.search(pattern, text.lower()) is not None
+    # Remover acentos e converter para minúsculas
+    normalized_text = remove_accents(text).lower()
+    normalized_keyword = remove_accents(keyword).lower()
+
+    # Criar um padrão de expressão regular para encontrar palavras exatas
+    pattern = r'(?<!\w)' + re.escape(normalized_keyword) + r'(?!\w)'
+    return re.search(pattern, normalized_text) is not None
 
 
 # Contar a frequência de cada tecnologia nas descrições das vagas
